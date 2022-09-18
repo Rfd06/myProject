@@ -1,0 +1,39 @@
+body {
+   background-color:D6D5D3;
+   font-size: 300%;
+}
+sub{
+   background-color: 4ADCDE;
+   text-color: gold;
+}
+form {
+  text-align: left;
+  background : grey;
+  width: 50%;
+  padding: 7px;
+  color: 81DDDF;
+  font-size: 24px;
+
+  
+}
+h1 {
+   text-align: center;	
+   color: blue;
+}
+form{
+   input[type=text] {
+  width: 100%;
+  padding: 7px ;
+  margin: 5px 0;
+  border: 1px solid #000000;
+  }
+input[type=submit] {
+  width: 50%;
+  padding: 9px;
+  margin: 5px 0;
+  
+  border: 2px solid #000000;
+  outline: none;
+   background-color:green;
+   color:white;
+}
