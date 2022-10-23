@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<style>
+table,th,td {
+  border : 1px solid black;
+  border-collapse: collapse;
+  margin-left:auto;
+  margin-right:auto;
+}
+th,td {
+  padding: 5px;
+}
+h1{
+    text-align:center;
+    font-size:56px;
+}
+
+</style>
+<body>
+
+<h1>Phone directory</h1>
+
+<button type="button" onclick="loadDoc()">Get my contacts list</button>
+<br><br>
+<table id="demo"></table>
+
+<br>
+
+<input type="text" id="searchprof" name="indicator" placeholder="Search by profession"><br>
+<button onclick="searchbyprof()">Profession search results</button>
+<table id="professionsearch"></table>
+
+<br>
+<input type="number" id="indicator" name="indicator" placeholder="Search by phone number"><br>
+<button onclick="displaybyphone()">Phone number search results</button>
+<table id="numbersearch"></table>
+<label id="errormsg"></label>
+
+
+
+<script>
+ function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      myFunction(this);
+    }
+  };
+  xhttp.open("GET", "CATALOG.xml", true);
+  xhttp.send();
+ }
+ function myFunction(xml) {
+  var i;
+  var xmlDoc = xml.responseXML;
+  var table="<tr><th>Name</th><th>Profession</th><th>Telephone Number</th><th>Mobile Number</th></tr>";
+  var x = xmlDoc.getElementsByTagName("CONTACT");
+  for (i = 0; i <x.length; i++) { 
+    table += "<tr><td>" +
+    x[i].getElementsByTagName("NAME")[0].childNodes[0].nodeValue +
+    "</td><td>" +
+    x[i].getElementsByTagName("PROFESSION")[0].childNodes[0].nodeValue +
+    "</td><td>" +
+    x[i].getElementsByTagName("TELEPHONE_NUMBER")[0].childNodes[0].nodeValue +
+    "</td><td>" +
+    x[i].getElementsByTagName("MOBILE_NUMBER")[0].childNodes[0].nodeValue +
+    "</td></tr>";
+  }
+  document.getElementById("demo").innerHTML = table;
+ }
+
+ function printError(){
+	document.getElementById("errormsg").innerHTML = "no results found";
+ }
+
+ function searchbyprof(){
+    var xml = new XMLHttpRequest();
+    var name = document.getElementById('searchprof').value;
+    xml.onreadystatechange = function() {
+     if (this.readyState == 4 && this.status == 200){
+	var a;
+	var xmlDoc = this.responseXML;
+	var table="<tr><th>Name</th><th>Profession</th><th>Telephone Number</th><th>Mobile Number</th></tr>";
+	var b = xmlDoc.getElementsByTagName("CONTACT");
+	
+	for (a=0; a < b.length; a++){
+	 if(b[a].getElementsByTagName("PROFESSION")[0].childNodes[0].nodeValue === name){
+	 table += "<tr><td>" +
+	 b[a].getElementsByTagName("NAME")[0].childNodes[0].nodeValue +
+	 "</td><td>" +
+    	 b[a].getElementsByTagName("PROFESSION")[0].childNodes[0].nodeValue +
+	 "</td><td>" +
+    	 b[a].getElementsByTagName("TELEPHONE_NUMBER")[0].childNodes[0].nodeValue +
+	 "</td><td>" +
+    	 b[a].getElementsByTagName("MOBILE_NUMBER")[0].childNodes[0].nodeValue + 
+	 "</td></tr>";
+	 }
+	}
+	
+	if(table == "<tr><th>Name</th><th>Profession</th><th>Telephone Number</th><th>Mobile Number</th></tr>"){
+         printError();
+      }
+      else{
+        document.getElementById("professionsearch").innerHTML = table;
+      }     
+  }
+
+  };
+  xml.open("GET","CATALOG.xml", true);
+  xml.send();
+  console.log(document.getElementById('indicator').value);
+}
+
+function displaybyphone(){
+
+  var xml = new XMLHttpRequest();
+  var name  = document.getElementById('indicator').value; 
+  xml.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        var a;
+        var xmlDoc = this.responseXML;
+        var table="<tr><th>Name</th><th>Profession</th><th>Telephone Number</th><th>Mobile Number</th></tr>";
+        var b = xmlDoc.getElementsByTagName("CONTACT");
+
+        for (a = 0; a <b.length; a++) { 
+          if(b[a].getElementsByTagName("TELEPHONE_NUMBER")[0].childNodes[0].nodeValue === name){
+            table += "<tr><td>" +
+            b[a].getElementsByTagName("NAME")[0].childNodes[0].nodeValue +"</td><td>"+
+            b[a].getElementsByTagName("PROFESSION")[0].childNodes[0].nodeValue +"</td><td>" + 
+            b[a].getElementsByTagName("TELEPHONE_NUMBER")[0].childNodes[0].nodeValue +"</td><td>" +
+            b[a].getElementsByTagName("MOBILE_NUMBER")[0].childNodes[0].nodeValue + "</td></tr>";
+          } 
+        }
+
+      if(table == "<tr><th>Name</th><th>Profession</th><th>Contact Mobile Number</th><th>Telephone Number</th></tr>"){
+        printError();
+      }
+      else{
+        document.getElementById("numbersearch").innerHTML = table;
+      }     
+  }
+  };
+  xml.open("GET", "CATALOG.xml", true);
+  xml.send();
+
+  console.log(document.getElementById('indicator').value);
+  
+}
+
+
+
+</script>
+
+</body>
+</html>
